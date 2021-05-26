@@ -16,10 +16,15 @@
 #' @export
 #'
 fit_model4 <- function(mcbu_data_file = "./data/distdata_mcbu.csv", ni = 200, nb = 100, nt = 1, nc = 1, M = c(200,100),
-                      save_output = FALSE, jags_output_file = "./output/out4.RData", use_parallel = TRUE){
+                      save_output = FALSE, jags_output_file = NULL, use_parallel = TRUE){
     if(!"models" %in% list.files("./"))
         dir.create("./models")
     write_model_4()
+    if(is.null(jags_output_file)){
+        if(!"output" %in% list.files("./"))
+            dir.create("./output")
+        jags_output_file = "./output/out4.RData"
+    }
     mcbu_data = read.csv(mcbu_data_file) # MCBU detections only, both survey years, data cleaned and ready for MCBU analysis
     exp_names = c("Region.Label","Area","Sample.Label","Effort","species","distance","size","obs","date","julian","year","bird_lat","bird_long","notes")
     if(!all(exp_names %in% colnames(mcbu_data))){
