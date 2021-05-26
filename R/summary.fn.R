@@ -1,8 +1,22 @@
+#' Calculate Mode
+#'
+#' @param x vector of numeric values
+#'
+#' @return numeric value of mode as estimated by the base \code{density} function in R with \code{na.rm = TRUE}
+#' @export
+#'
 Mode <- function(x) {
   d <- density(x,na.rm=TRUE)
   d$x[which.max(d$y)]
-} #fn
+}
 
+#' Calculate Simple Summary Statistics
+#'
+#' @param x numeric vector or matrix
+#'
+#' @return numeric vector or matrix
+#' @export
+#'
 summary.fn	<- function(x=NULL){
     cn <- c("mean","sd","mode","0%","2.5%","5%","25%","50%","75%","95%","97.5%","100%")
     if(!is.null(x)){
@@ -25,4 +39,4 @@ summary.fn	<- function(x=NULL){
         return(y)
     }
     if(is.null(x)){return(cn)}
-}# fn
+}
