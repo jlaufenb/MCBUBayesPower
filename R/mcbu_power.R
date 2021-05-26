@@ -26,15 +26,15 @@ mcbu_power <- function(log_lambda0 = c(4.1257,3.9400), r = log(0.75^(1/10)), mu_
     if(!"models" %in% list.files("./"))
         dir.create("./models")
     write_model_4()
-    scenario <- paste0("mcbu_power_",length(survey_years),"surveys_r",round(r,2))
+    design <- paste0("mcbu_power_",length(survey_years),"surveys_r",round(r,2))
     if(save_output){
         if(is.null(output_filepath)){
             if(!"output" %in% list.files("./"))
                 dir.create("./output")
-            if(!scenario %in% list.files("./output"))
-                dir.create(paste0("./output/", scenario))
-            if(!"mcmc" %in% list.files(paste0("./output/", scenario)))
-                output_filepath = paste0("./output/", scenario,"/mcmc")
+            if(!design %in% list.files("./output"))
+                dir.create(paste0("./output/", design))
+            if(!"mcmc" %in% list.files(paste0("./output/", design)))
+                output_filepath = paste0("./output/", design,"/mcmc")
             dir.create(output_filepath)
         }
     }
