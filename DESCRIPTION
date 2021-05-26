@@ -1,11 +1,14 @@
-Package: AKIMRPkgTmpl
+Package: mcbu_bayes_power
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: Power Analysis Tools for MCBU Surveys
+Version: 0.0.0.9000
+Author: Jared Laufenberg
+Maintainer: Jared Laufenberg <jared_laufenberg@fws.gov>
+Maintainer: Jared Laufenberg <jared_laufenberg@fws.gov>
+Description: Suite of custom R functions used to analyze MCBU distance-sampling data and
+    perform statistical power analyses using Bayesian methods.
+License: None
 Encoding: UTF-8
 LazyData: true
+Imports:
+    jagsUI
