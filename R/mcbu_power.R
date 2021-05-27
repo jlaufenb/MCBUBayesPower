@@ -20,7 +20,7 @@
 #' @return No output objects are returned.
 #' @export
 #'
-mcbu_power <- function(log_lambda0 = c(4.1257,3.9400), r = log(0.75^(1/10)), mu_obs = -2.9769, sd_obs = 0.4470, survey_years = c(2018,2028),
+run_mcbu_power <- function(log_lambda0 = c(4.1257,3.9400), r = log(0.75^(1/10)), mu_obs = -2.9769, sd_obs = 0.4470, survey_years = c(2018,2028),
                        mcbu_data_file = "./data/distdata_mcbu.csv", save_output = FALSE, output_filepath = NULL,
                        batch = 1, M = c(200,100), ni = 200, nb = 100, nt = 1, nc = 1, use_parallel = TRUE){
     if(!"models" %in% list.files("./"))
