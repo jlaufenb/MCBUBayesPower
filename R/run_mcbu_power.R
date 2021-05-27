@@ -3,7 +3,7 @@
 #' MCBU Model 4 Power Analysis - Data and MCMC Simulator
 #'
 #' @param log_lambda0 Numeric vector of length 2 containing starting island-specific MCBU densities in square km. Default set to preliminary estimates for 2018)
-#' @param r Numeric value specifying exponential growth rate \code{r}. Default value is set to 25% decline over 10 years.
+#' @param r Numeric value specifying exponential growth rate \code{r}. Default value is set to 25 percent decline over 10 years.
 #' @param mu_obs Numeric value specifying the mean sigma value across observers on the log scale. Default set to preliminary estimates for 2003 and 2018.
 #' @param sd_obs Numeric value specifying the standard deviation of sigma values across observers on the log scale. Default set to preliminary estimates for 2003 and 2018.
 #' @param survey_years Numeric vector specifying in which years surveys will be conducted.
