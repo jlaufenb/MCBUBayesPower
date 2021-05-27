@@ -14,7 +14,7 @@ Mode <- function(x) {
 #'
 #' @param x numeric vector or matrix
 #'
-#' @return numeric vector or matrix
+#' @return numeric vector or matrix when x is supplied. Returns labels when x is NULL.
 #' @export
 #'
 summary.fn	<- function(x=NULL){
