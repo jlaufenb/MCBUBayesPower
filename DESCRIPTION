@@ -4,7 +4,6 @@ Title: Power Analysis Tools for MCBU Surveys
 Version: 0.0.0.9000
 Author: Jared Laufenberg
 Maintainer: Jared Laufenberg <jared_laufenberg@fws.gov>
-Maintainer: Jared Laufenberg <jared_laufenberg@fws.gov>
 Description: Suite of custom R functions used to analyze MCBU distance-sampling data and
     perform statistical power analyses using Bayesian methods.
 License: None
@@ -12,3 +11,4 @@ Encoding: UTF-8
 LazyData: true
 Imports:
     jagsUI
+RoxygenNote: 7.1.1
