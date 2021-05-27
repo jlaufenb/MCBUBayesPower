@@ -1,4 +1,4 @@
-Package: mcbu_bayes_power
+Package: MCBUBayesPower
 Type: Package
 Title: Power Analysis Tools for MCBU Surveys
 Version: 0.0.0.9000
