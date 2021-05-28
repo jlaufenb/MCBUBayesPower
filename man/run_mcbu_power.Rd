@@ -10,20 +10,21 @@ run_mcbu_power(
   mu_obs = -2.9769,
   sd_obs = 0.447,
   survey_years = c(2018, 2028),
-  mcbu_data_file = "./data/distdata_mcbu.csv",
+  mcbu_data_file = "distdata_mcbu.csv",
   save_output = FALSE,
-  output_filepath = NULL,
+  sims_output_folder = NULL,
   batch = 1,
   M = c(200, 100),
   ni = 200,
   nb = 100,
   nt = 1,
   nc = 1,
-  use_parallel = TRUE
+  use_parallel = TRUE,
+  ...
 )
 }
 \arguments{
-\item{log_lambda0}{Numeric vector of length 2 containing starting island-specific MCBU densities in square km. Default set to preliminary estimates for 2018)}
+\item{log_lambda0}{Numeric vector of length 2 containing starting island-specific (\code{c(Hall,St Matthew)}) MCBU densities in square km. Default set to preliminary estimates for 2018.}
 
 \item{r}{Numeric value specifying exponential growth rate \code{r}. Default value is set to 25 percent decline over 10 years.}
 
@@ -33,11 +34,11 @@ run_mcbu_power(
 
 \item{survey_years}{Numeric vector specifying in which years surveys will be conducted.}
 
-\item{mcbu_data_file}{File path and name for MCBU distance data. Default is set to internal package \code{data} folder}
+\item{mcbu_data_file}{File path and name for MCBU distance data. Default is set to distdata_mcbu.csv in the working directory.}
 
 \item{save_output}{Logical value specifying whether to save JAGS output. Default set to FALSE.}
 
-\item{output_filepath}{File path for saving JAGS output. Default is set to NULL which creates an internal \code{output} and related folders to store output.}
+\item{sims_output_folder}{Folder location to save JAGS output from simulations. Default creates an "output/'design'/mcmc" subdirectory in working directory.}
 
 \item{batch}{Integer vector specifying replicates for data and MCMC simulation. Default set to single replicate.}
 

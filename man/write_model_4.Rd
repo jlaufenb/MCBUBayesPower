@@ -4,7 +4,7 @@
 \alias{write_model_4}
 \title{Write JAGS Model 4 to File}
 \usage{
-write_model_4(model_filepath = "./models/model_4.txt")
+write_model_4(model_filepath = NULL)
 }
 \arguments{
 \item{model_filepath}{File path and name for JAGS model to be written}

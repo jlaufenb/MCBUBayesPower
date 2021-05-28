@@ -5,19 +5,20 @@
 \title{Fit JAGS Model 3}
 \usage{
 fit_model3(
-  mcbu_data_file = "./data/distdata_mcbu.csv",
+  mcbu_data_file = "distdata_mcbu.csv",
   ni = 200,
   nb = 100,
   nt = 1,
   nc = 1,
   M = c(200, 100),
   save_output = FALSE,
-  jags_output_file = NULL,
-  use_parallel = TRUE
+  jags_output_folder = NULL,
+  use_parallel = TRUE,
+  ...
 )
 }
 \arguments{
-\item{mcbu_data_file}{File path and name for MCBU distance data.}
+\item{mcbu_data_file}{File path and name for MCBU distance data. Default is set to distdata_mcbu.csv in the working directory.}
 
 \item{ni}{Total number of MCMC samples to simulate including burn-in samples. (Does not include adaptive samples)}
 
@@ -31,12 +32,12 @@ fit_model3(
 
 \item{save_output}{Logical value specifying whether to save JAGS output.}
 
-\item{jags_output_file}{File path and name used to save JAGS output.}
+\item{jags_output_folder}{Folder location to save JAGS output. Default creates output folder in working directory.}
 
 \item{use_parallel}{Logical value specifying whether to use parallel computing when simulating >1 MCMC chain. See help for \code{jags} function in \code{jagsUI} package for more details.}
 }
 \value{
-JAGS MCMC output from fitting an exponential growth model with groups as observation unit and observer random effect on sigma parameter to MCBU distance-sampling data from 2003 and 2018
+JAGS MCMC output from fitting an exponential growth model with individual groups as observation unit and observer random effect on sigma parameter to MCBU distance-sampling data from 2003 and 2018
 }
 \description{
 Fit JAGS Model 3
