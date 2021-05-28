@@ -2,13 +2,14 @@
 
 #' MCBU Model 4 Power Analysis - Data and MCMC Simulator
 #'
-#' @param log_lambda0 Numeric vector of length 2 containing starting island-specific MCBU densities in square km. Default set to preliminary estimates for 2018)
+#' @param log_lambda0 Numeric vector of length 2 containing starting island-specific (\code{c(Hall,St Matthew)}) MCBU densities in square km. Default set to preliminary estimates for 2018.
 #' @param r Numeric value specifying exponential growth rate \code{r}. Default value is set to 25 percent decline over 10 years.
 #' @param mu_obs Numeric value specifying the mean sigma value across observers on the log scale. Default set to preliminary estimates for 2003 and 2018.
 #' @param sd_obs Numeric value specifying the standard deviation of sigma values across observers on the log scale. Default set to preliminary estimates for 2003 and 2018.
 #' @param survey_years Numeric vector specifying in which years surveys will be conducted.
-#' @param mcbu_data_file File path and name for MCBU distance data. Default is set to internal package \code{data} folder
+#' @param mcbu_data_file File path and name for MCBU distance data. Default is set to distdata_mcbu.csv in the working directory.
 #' @param save_output Logical value specifying whether to save JAGS output. Default set to FALSE.
+#' @param sims_output_folder Folder location to save JAGS output from simulations. Default creates an "output/'design'/mcmc" subdirectory in working directory.
 #' @param batch Integer vector specifying replicates for data and MCMC simulation. Default set to single replicate.
 #' @param M Integer vector specifying the augmented number of MCBU groups per square kilometer.
 #' @param nb Number of MCMC samples to discard as burn-in samples.
@@ -20,18 +21,20 @@
 #' @export
 #'
 run_mcbu_power <- function(log_lambda0 = c(4.1257,3.9400), r = log(0.75^(1/10)), mu_obs = -2.9769, sd_obs = 0.4470, survey_years = c(2018,2028),
-                       mcbu_data_file = "./data/distdata_mcbu.csv", save_output = FALSE,
-                       batch = 1, M = c(200,100), ni = 200, nb = 100, nt = 1, nc = 1, use_parallel = TRUE){
-    write_model_4()
+                       mcbu_data_file = "distdata_mcbu.csv", save_output = FALSE, sims_output_folder = NULL,
+                       batch = 1, M = c(200,100), ni = 200, nb = 100, nt = 1, nc = 1, use_parallel = TRUE, ...){
+    write_model_4(...)
     if(save_output){
-        design = paste0("mcbu_power_",length(survey_years),"surveys_r",round(r,2))
-        output_filepath = paste0("./output/", design,"/mcmc")
-        if(!"output" %in% list.files("./"))
-            dir.create("./output")
-        if(!design %in% list.files("./output"))
-            dir.create(paste0("./output/", design))
-        if(!"mcmc" %in% list.files(paste0("./output/", design)))
-            dir.create(output_filepath)
+        if(is.null(sims_output_folder)){
+            design = paste0("mcbu_power_",length(survey_years),"surveys_r",round(r,2))
+            sims_output_folder = paste0("./output/", design,"/mcmc")
+            if(!"output" %in% list.files("./"))
+                dir.create("./output")
+            if(!design %in% list.files("./output"))
+                dir.create(paste0("./output/", design))
+            if(!"mcmc" %in% list.files(paste0("./output/", design)))
+                dir.create(sims_output_folder)
+        }
     }
     B = 0.1 # half-width of survey transects in km
     sites = c("HALL","STMA")
@@ -142,7 +145,7 @@ run_mcbu_power <- function(log_lambda0 = c(4.1257,3.9400), r = log(0.75^(1/10)),
             # save output
             if(save_output){
                 mcmc_name = paste("mcmc",rep,sep="")
-                file_name = paste(output_filepath, "/mcmc_",rep,".RData",sep="")
+                file_name = paste(sims_output_folder, "/mcmc_",rep,".RData",sep="")
                 assign(mcmc_name, mcmc_rep)
                 save(list=mcmc_name, file=file_name)
             }

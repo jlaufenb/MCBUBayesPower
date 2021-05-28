@@ -7,9 +7,12 @@
 #' @return Text file containing JAGS model is saved to \code{model_filepath}
 #' @export
 #'
-write_model_3 <- function(model_filepath = "./models/model_3.txt"){
-    if(!"models" %in% list.files("./"))
-        dir.create("./models")
+write_model_3 <- function(model_filepath = NULL){
+    if(is.null(model_filepath)){
+        model_filepath = "./models/model_3.txt"
+        if(!"models" %in% list.files("./"))
+            dir.create("./models")
+    }
     cat("
         model{
             # multiple year, island-specific density and groups, common growth rate, random observer-effect on sigma model
