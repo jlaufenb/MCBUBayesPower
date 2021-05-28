@@ -37,7 +37,7 @@ fit_model3(
 \item{use_parallel}{Logical value specifying whether to use parallel computing when simulating >1 MCMC chain. See help for \code{jags} function in \code{jagsUI} package for more details.}
 }
 \value{
-JAGS MCMC output from fitting an exponential growth model with individual groups as observation unit and observer random effect on sigma parameter to MCBU distance-sampling data from 2003 and 2018. Output is saved as an RData file named \code{out3.R}.
+JAGS MCMC output from fitting an exponential growth model with individual groups as observation unit and observer random effect on sigma parameter to MCBU distance-sampling data from 2003 and 2018. Output is saved as an RData file named \code{out3.RData}.
 }
 \description{
 Fit JAGS Model 3
