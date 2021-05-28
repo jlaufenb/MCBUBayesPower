@@ -88,7 +88,7 @@ fit_model4 <- function(mcbu_data_file = "./data/distdata_mcbu.csv", ni = 200, nb
                       yearstep = yearstep)
     params4 = c("mu_obs", "sd_obs", "alpha0", "r", "lambda_pop", "EN_region")
     inits = function(){list(mu_obs = -3, sd_obs = 1, r = 0, log_lambda0 = rep(4,S))}
-    out4 = jags(jags.data, inits, params4, "./models/model_4.txt", n.thin = nt,
+    out4 = jagsUI::jags(jags.data, inits, params4, "./models/model_4.txt", n.thin = nt,
                  n.chains = nc, n.burnin = nb, n.iter = ni, parallel = use_parallel)
     if(save_output) save(out4, file = jags_output_file)
     return(out4)

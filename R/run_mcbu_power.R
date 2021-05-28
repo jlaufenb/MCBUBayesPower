@@ -142,7 +142,7 @@ run_mcbu_power <- function(log_lambda0 = c(4.1257,3.9400), r = log(0.75^(1/10)),
                               B = B,
                               yearstep = yearstep)
             # run mcmc
-            mcmc_rep = jags(jags_data, inits, params4, "./models/model_4.txt", n.thin = nt,
+            mcmc_rep = jagsUI::jags(jags_data, inits, params4, "./models/model_4.txt", n.thin = nt,
                              n.chains = nc, n.burnin = nb, n.iter = ni, parallel = use_parallel)
             # save output
             if(save_output){
