@@ -8,6 +8,8 @@
 #' @export
 #'
 write_model_2 <- function(model_filepath = "./models/model_2.txt"){
+    if(!"models" %in% list.files("./"))
+        dir.create("./models")
     cat("
         model{
             # single year, island-specific density and group size, random observer-effect on sigma model

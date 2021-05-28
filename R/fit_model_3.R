@@ -9,22 +9,16 @@
 #' @param nc Integer specifying the number of individual MCMC chains to simulate.
 #' @param M Integer vector specifying the augmented number of MCBU groups per square kilometer.
 #' @param save_output Logical value specifying whether to save JAGS output.
-#' @param jags_output_file  File path and name used to save JAGS output.
 #' @param use_parallel Logical value specifying whether to use parallel computing when simulating >1 MCMC chain. See help for \code{jags} function in \code{jagsUI} package for more details.
 #'
 #' @return  JAGS MCMC output from fitting an exponential growth model with groups as observation unit and observer random effect on sigma parameter to MCBU distance-sampling data from 2003 and 2018
 #' @export
 #'
 fit_model3 <- function(mcbu_data_file = "./data/distdata_mcbu.csv", ni = 200, nb = 100, nt = 1, nc = 1, M = c(200,100),
-                      save_output = FALSE, jags_output_file = NULL, use_parallel = TRUE){
-    if(!"models" %in% list.files("./"))
-        dir.create("./models")
+                      save_output = FALSE, use_parallel = TRUE){
     write_model_3()
-    if(is.null(jags_output_file)){
-        if(!"output" %in% list.files("./"))
-            dir.create("./output")
-        jags_output_file = "./output/out3.RData"
-    }
+    if(!"output" %in% list.files("./"))
+        dir.create("./output")
     mcbu_data = read.csv(mcbu_data_file) # MCBU detections only, both survey years, data cleaned and ready for MCBU analysis
     exp_names = c("Region.Label","Area","Sample.Label","Effort","species","distance","size","obs","date","julian","year","bird_lat","bird_long","notes")
     if(!all(exp_names %in% colnames(mcbu_data))){
@@ -90,7 +84,7 @@ fit_model3 <- function(mcbu_data_file = "./data/distdata_mcbu.csv", ni = 200, nb
     inits = function(){list(mu_obs = -3, sd_obs = 1, alpha1 = 0, r = 0, log_lambda0 = rep(4,S), lambda_group = rep(1,S))}
     out3 = jagsUI::jags(jags.data, inits, params3, "./models/model_3.txt", n.thin = nt,
                 n.chains = nc, n.burnin = nb, n.iter = ni, parallel = use_parallel)
-    if(save_output) save(out3, file = jags_output_file)
+    if(save_output) save(out3, file = "./output/out3.RData")
     return(out3)
 }
 

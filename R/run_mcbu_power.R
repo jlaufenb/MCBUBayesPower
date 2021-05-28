@@ -9,7 +9,6 @@
 #' @param survey_years Numeric vector specifying in which years surveys will be conducted.
 #' @param mcbu_data_file File path and name for MCBU distance data. Default is set to internal package \code{data} folder
 #' @param save_output Logical value specifying whether to save JAGS output. Default set to FALSE.
-#' @param output_filepath File path for saving JAGS output. Default is set to NULL which creates an internal \code{output} and related folders to store output.
 #' @param batch Integer vector specifying replicates for data and MCMC simulation. Default set to single replicate.
 #' @param M Integer vector specifying the augmented number of MCBU groups per square kilometer.
 #' @param nb Number of MCMC samples to discard as burn-in samples.
@@ -21,22 +20,18 @@
 #' @export
 #'
 run_mcbu_power <- function(log_lambda0 = c(4.1257,3.9400), r = log(0.75^(1/10)), mu_obs = -2.9769, sd_obs = 0.4470, survey_years = c(2018,2028),
-                       mcbu_data_file = "./data/distdata_mcbu.csv", save_output = FALSE, output_filepath = NULL,
+                       mcbu_data_file = "./data/distdata_mcbu.csv", save_output = FALSE,
                        batch = 1, M = c(200,100), ni = 200, nb = 100, nt = 1, nc = 1, use_parallel = TRUE){
-    if(!"models" %in% list.files("./"))
-        dir.create("./models")
     write_model_4()
-    design = paste0("mcbu_power_",length(survey_years),"surveys_r",round(r,2))
     if(save_output){
-        if(is.null(output_filepath)){
-            if(!"output" %in% list.files("./"))
-                dir.create("./output")
-            if(!design %in% list.files("./output"))
-                dir.create(paste0("./output/", design))
-            if(!"mcmc" %in% list.files(paste0("./output/", design)))
-                output_filepath = paste0("./output/", design,"/mcmc")
+        design = paste0("mcbu_power_",length(survey_years),"surveys_r",round(r,2))
+        output_filepath = paste0("./output/", design,"/mcmc")
+        if(!"output" %in% list.files("./"))
+            dir.create("./output")
+        if(!design %in% list.files("./output"))
+            dir.create(paste0("./output/", design))
+        if(!"mcmc" %in% list.files(paste0("./output/", design)))
             dir.create(output_filepath)
-        }
     }
     B = 0.1 # half-width of survey transects in km
     sites = c("HALL","STMA")
