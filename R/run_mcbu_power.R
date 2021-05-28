@@ -26,7 +26,7 @@ run_mcbu_power <- function(log_lambda0 = c(4.1257,3.9400), r = log(0.75^(1/10)),
     write_model_4(...)
     if(save_output){
         if(is.null(sims_output_folder)){
-            design = paste0("mcbu_power_",length(survey_years),"surveys_r",round(r,2))
+            design = paste0("mcbu_power_",length(survey_years),"surveys_r",round(r,3))
             sims_output_folder = paste0("./output/", design,"/mcmc")
             if(!"output" %in% list.files("./"))
                 dir.create("./output")
