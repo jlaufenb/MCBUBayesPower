@@ -43,7 +43,7 @@ run_mcbu_power <- function(log_lambda0 = c(4.1257,3.9400), r = log(0.75^(1/10)),
     S = length(sites)
     Js = c(14,34)
     T = length(survey_years)
-    yearstep = matrix(rep(diff(survey_years),S),S,T)
+    yearstep = matrix(rep(diff(survey_years),S*(T-1)),S,T-1)
     K = 8 + 1
     Jmat = matrix(rep(Js,T), nrow = S, ncol = T, byrow = FALSE, dimnames = list(sites,paste0("y",survey_years)))
     params4 = c("mu_obs", "sd_obs", "alpha0", "r", "lambda_pop", "EN_region")
