@@ -51,6 +51,7 @@ process_mcbu_power <- function(true_pctdecl = 25, output_filepath = NULL,
         }
     }))
     #
+    lty_indz <- -(cover_95 - 1) + 1
     sq_err = bias^2
     sq_err_sum = summary.fn(sq_err)
     cv_sum = summary.fn(cv)
@@ -61,7 +62,7 @@ process_mcbu_power <- function(true_pctdecl = 25, output_filepath = NULL,
     (ci_cover_90 = sum(cover_90)/nreps)
     (onetail_power_90 = 1 - (sum(onetail_90)/nreps))
     #
-    if(save_summary)save(sq_err, cv, bias, rmse, ci_cover_95, ci_cover_90, onetail_power_95, onetail_power_90,
+    if(save_summary)save(sq_err, cv, bias, rmse, cover_95, cover_90, ci_cover_95, ci_cover_90, onetail_power_95, onetail_power_90,
                          r_post, lambda_post, pctdecl_post,
                          file = paste0(summary_filepath, "/summary.RData"))
     if(save_figures){
