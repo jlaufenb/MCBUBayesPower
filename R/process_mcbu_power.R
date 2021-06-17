@@ -63,7 +63,7 @@ process_mcbu_power <- function(true_pctdecl = 25, output_filepath = NULL,
     (onetail_power_90 = 1 - (sum(onetail_90)/nreps))
     #
     if(save_summary)save(sq_err, cv, bias, rmse, cover_95, cover_90, ci_cover_95, ci_cover_90, onetail_power_95, onetail_power_90,
-                         r_post, lambda_post, pctdecl_post,
+                         r_post, lambda_post, pctdecl_post,pctdecl_est,
                          file = paste0(summary_filepath, "/summary.RData"))
     if(save_figures){
         png(paste0(figure_filepath, "/ci_cover.png"), height = 9, width = 6.5, units = "in", res = 192)
