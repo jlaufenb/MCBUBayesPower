@@ -144,7 +144,7 @@ density_diff_plot <- function(mod_output = NULL, save_plot = FALSE, file_path = 
 
 #' Plot Bias Histogram
 #'
-#' @param bias Numeric vector containing values of relative bias between posterior means and true value of the % population decline per 10 years across all simulated data sets.
+#' @param bias Numeric vector containing values of relative bias between posterior means and true value of the percent population decline per 10 years across all simulated data sets.
 #' @param save_plot Logical value indicating whether to save plot.
 #' @param file_path File path including user-provided file name.
 #' @param w Numeric value specifying figure width in inches.
@@ -183,7 +183,7 @@ bias_plot <- function(bias = NULL, save_plot = FALSE, file_path = NULL, w = 6.5,
 
 #' Plot Coefficient of Variation Histogram
 #'
-#' @param cv Numeric vector containing coefficient of variation (CV) estimates calculated from posterior distributions for the % population decline per 10 years across all simulated data sets.
+#' @param cv Numeric vector containing coefficient of variation (CV) estimates calculated from posterior distributions for the percent population decline per 10 years across all simulated data sets.
 #' @param save_plot Logical value indicating whether to save plot.
 #' @param file_path File path including user-provided file name.
 #' @param w Numeric value specifying figure width in inches.
@@ -219,9 +219,9 @@ cv_plot <- function(cv = NULL, save_plot = FALSE, file_path = NULL, w = 6.5, h =
 
 #' Plot Bayesian Credible Intervals for All Simulations
 #'
-#' @param pctdecl_ests Matrix containing summary statistics calculated from posterior distributions of the % population decline per 10 years for all simulated data sets.
-#' @param cover_95 Numeric vector containing posterior distributions means of the % population decline per 10 years for all simulated data sets.
-#' @param true_pctdecl Numeric value specifying true % population decline per 10 years used for simulations.
+#' @param pctdecl_ests Matrix containing summary statistics calculated from posterior distributions of the percent population decline per 10 years for all simulated data sets.
+#' @param cover_95 Numeric vector containing posterior distributions means of the percent population decline per 10 years for all simulated data sets.
+#' @param true_pctdecl Numeric value specifying true percent population decline per 10 years used for simulations.
 #' @param save_plot Logical value indicating whether to save plot.
 #' @param file_path File path including user-provided file name.
 #' @param w Numeric value specifying figure width in inches.
@@ -264,7 +264,7 @@ ci_cover_plot <- function(pctdecl_ests = NULL, cover_95 = NULL, true_pctdecl = 2
 
 #' Plot Squared Error Histogram
 #'
-#' @param sq_err Numeric vector containing squared error estimates calculated from posterior distributions for the % population decline per 10 years across all simulated data sets.
+#' @param sq_err Numeric vector containing squared error estimates calculated from posterior distributions for the percent population decline per 10 years across all simulated data sets.
 #' @param save_plot Logical value indicating whether to save plot.
 #' @param file_path File path including user-provided file name.
 #' @param w Numeric value specifying figure width in inches.
