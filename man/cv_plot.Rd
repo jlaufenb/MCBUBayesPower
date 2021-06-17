@@ -7,7 +7,7 @@
 cv_plot(cv = NULL, save_plot = FALSE, file_path = NULL, w = 6.5, h = 6.5)
 }
 \arguments{
-\item{cv}{Numeric vector containing coefficient of variation (CV) estimates calculated from posterior distributions for the % population decline per 10 years across all simulated data sets.}
+\item{cv}{Numeric vector containing coefficient of variation (CV) estimates calculated from posterior distributions for the percent population decline per 10 years across all simulated data sets.}
 
 \item{save_plot}{Logical value indicating whether to save plot.}
 

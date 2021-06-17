@@ -13,7 +13,7 @@ sq_err_plot(
 )
 }
 \arguments{
-\item{sq_err}{Numeric vector containing squared error estimates calculated from posterior distributions for the % population decline per 10 years across all simulated data sets.}
+\item{sq_err}{Numeric vector containing squared error estimates calculated from posterior distributions for the percent population decline per 10 years across all simulated data sets.}
 
 \item{save_plot}{Logical value indicating whether to save plot.}
 

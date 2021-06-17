@@ -7,7 +7,7 @@
 bias_plot(bias = NULL, save_plot = FALSE, file_path = NULL, w = 6.5, h = 6.5)
 }
 \arguments{
-\item{bias}{Numeric vector containing values of relative bias between posterior means and true value of the % population decline per 10 years across all simulated data sets.}
+\item{bias}{Numeric vector containing values of relative bias between posterior means and true value of the percent population decline per 10 years across all simulated data sets.}
 
 \item{save_plot}{Logical value indicating whether to save plot.}
 

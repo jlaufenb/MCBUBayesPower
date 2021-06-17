@@ -15,11 +15,11 @@ ci_cover_plot(
 )
 }
 \arguments{
-\item{pctdecl_ests}{Matrix containing summary statistics calculated from posterior distributions of the % population decline per 10 years for all simulated data sets.}
+\item{pctdecl_ests}{Matrix containing summary statistics calculated from posterior distributions of the percent population decline per 10 years for all simulated data sets.}
 
-\item{cover_95}{Numeric vector containing posterior distributions means of the % population decline per 10 years for all simulated data sets.}
+\item{cover_95}{Numeric vector containing posterior distributions means of the percent population decline per 10 years for all simulated data sets.}
 
-\item{true_pctdecl}{Numeric value specifying true % population decline per 10 years used for simulations.}
+\item{true_pctdecl}{Numeric value specifying true percent population decline per 10 years used for simulations.}
 
 \item{save_plot}{Logical value indicating whether to save plot.}
 
