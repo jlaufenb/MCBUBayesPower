@@ -1,3 +1,26 @@
+#' Create Folders
+#'
+#' @param dir Location to create new 'data', 'models', and 'output' folders.
+#' @param moreFolders Character vector of additional folder names to be created.
+#'
+#'@export
+
+create_folders <- function(dir = NULL, moreFolders = NULL) {
+
+    ## folder location and names
+    if(is.null(dir))root.dir = getwd()
+    folder_names = c("data","models","output",moreFolders)
+
+    ## check for existing folders
+    folder_names = folder_names[!(folder_names %in% list.files(root.dir))]
+
+    ## create new folders
+    f = paste0(root.dir, "/", folder_names)
+    lapply(f, dir.create)
+}
+
+
+
 #' Calculate Mode
 #'
 #' @param x vector of numeric values
@@ -6,8 +29,8 @@
 #' @export
 #'
 Mode <- function(x) {
-  d = density(x,na.rm=TRUE)
-  d$x[which.max(d$y)]
+    d = density(x,na.rm=TRUE)
+    d$x[which.max(d$y)]
 }
 
 #' Calculate Simple Summary Statistics
@@ -27,13 +50,13 @@ summary.fn	<- function(x=NULL){
             y = array(0L,c(dim(x)[2],10))
             for(i in 1:dim(x)[2]){
                 y[i,] = c(mean(x[,i],na.rm=TRUE), sd(x[,i],na.rm=TRUE), Mode(x[,i]),
-                           quantile(x[,i], probs = c(0,0.025,0.05,0.25,0.50,0.75,0.95,0.975,1), na.rm=TRUE))
+                          quantile(x[,i], probs = c(0,0.025,0.05,0.25,0.50,0.75,0.95,0.975,1), na.rm=TRUE))
                 dimnames(y)[[2]] = cn
                 dimnames(y)[[1]] = dimnames(x)[[2]]
             } #i
         }else{
             y = c(mean(x,na.rm=TRUE), sd(x,na.rm=TRUE), Mode(x),
-                   quantile(x, probs = c(0,0.025,0.05,0.25,0.50,0.75,0.95,0.975,1), na.rm=TRUE))
+                  quantile(x, probs = c(0,0.025,0.05,0.25,0.50,0.75,0.95,0.975,1), na.rm=TRUE))
             names(y) = cn
         } #ifelse
         return(y)
