@@ -1,0 +1,28 @@
+---
+title: "Fit Bayesian Hierarchical Population Model to Raw Distance-Sampling Data"
+author: "Jared Laufenberg, Alaska Region I&M Program, USFWS"
+date: "`r Sys.Date()'"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{fit_model_to_data_vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+# Description
+
+`MCBUBayesPower` is a custom package created to fit hierarchical population models to distance-sampling data using Bayesian methods to obtain parameter estimates, to fit models to simulated data sets based on prospective survey designs, and compile simulation results to evaluate statistical power among multiple survey designs.  This vignette describes a workflow for using `MCBUBayesPower` to fit models to raw MCBU data collected during previous surveys on St Matthew Islands.
+
+
+# Workflow
+
+
+
+
+
+```{r load-stuff, echo = TRUE, eval = FALSE}
+if(!"MCBUBayesPower" %in% rownames(installed.packages())) install.packages("./resources/software/MCBUBayesPower_0.0.0.9000.tar.gz", repos = NULL)
+library(MCBUBayesPower)
+library(jagsUI)
+```
