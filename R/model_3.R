@@ -2,7 +2,7 @@
 
 #' Write JAGS Model 3 to File
 #'
-#' @param model_filepath File path and name for JAGS model to be written
+#' @param model_filepath File path and name for JAGS model to be written. Default is the "models" folder created by the \code{create_folders} function.
 #'
 #' @return Text file containing JAGS model is saved to \code{model_filepath}
 #' @export

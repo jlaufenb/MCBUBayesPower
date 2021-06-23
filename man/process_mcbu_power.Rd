@@ -16,15 +16,15 @@ process_mcbu_power(
 \arguments{
 \item{true_pctdecl}{True percent decline over 10 years used in simulations.}
 
-\item{output_filepath}{File path to folder containing saved JAGS output from power simulations.}
-
 \item{save_figures}{Logical value specifying whether to save summary figures.}
 
-\item{figure_filepath}{File path to folder to which figures are saved.}
+\item{figure_filepath}{File path to folder to which figures are saved. Default creates an "output/'design'/figures" subfolder in which 'design' is a subfolder name based on simulation scenario.}
 
 \item{save_summary}{Logical value specifying whether to save summary R objects.}
 
-\item{summary_filepath}{File path to folder to which summary R objects are save.}
+\item{summary_filepath}{File path to folder to which summary R objects are saved. Default creates an "output/'design'/summary" subfolder in which 'design' is a subfolder name based on simulation scenario.}
+
+\item{jags_filepath}{File path to folder containing saved JAGS output from power simulations. Default is the "output/'design'/mcmc" subfolder created by the \code{run_mcbu_power} function in which 'design' is a subfolder name based on simulation scenario.}
 }
 \value{
 None

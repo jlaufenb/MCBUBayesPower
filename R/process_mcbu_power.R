@@ -3,11 +3,11 @@
 #' Process and Summarize MCBU Power Simulation Output
 #'
 #' @param true_pctdecl True percent decline over 10 years used in simulations.
-#' @param output_filepath File path to folder containing saved JAGS output from power simulations.
+#' @param jags_filepath File path to folder containing saved JAGS output from power simulations. Default is the "output/'design'/mcmc" subfolder created by the \code{run_mcbu_power} function in which 'design' is a subfolder name based on simulation scenario.
 #' @param save_figures Logical value specifying whether to save summary figures.
-#' @param figure_filepath File path to folder to which figures are saved.
+#' @param figure_filepath File path to folder to which figures are saved. Default creates an "output/'design'/figures" subfolder in which 'design' is a subfolder name based on simulation scenario.
 #' @param save_summary Logical value specifying whether to save summary R objects.
-#' @param summary_filepath File path to folder to which summary R objects are save.
+#' @param summary_filepath File path to folder to which summary R objects are saved. Default creates an "output/'design'/summary" subfolder in which 'design' is a subfolder name based on simulation scenario.
 #'
 #' @return None
 #' @export

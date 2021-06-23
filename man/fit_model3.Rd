@@ -18,7 +18,7 @@ fit_model3(
 )
 }
 \arguments{
-\item{mcbu_data_file}{File path and name for MCBU distance data. Default is set to distdata_mcbu.csv in the working directory.}
+\item{mcbu_data_file}{File path and name for MCBU distance data. Default is set to look for "distdata_mcbu.csv" in the "data" folder created by the \code{create_folders} function..}
 
 \item{ni}{Total number of MCMC samples to simulate including burn-in samples. (Does not include adaptive samples)}
 
@@ -32,7 +32,7 @@ fit_model3(
 
 \item{save_output}{Logical value specifying whether to save JAGS output.}
 
-\item{jags_output_folder}{Folder location to save JAGS output. Default creates output folder in working directory.}
+\item{jags_output_folder}{Folder location to save JAGS output. Default is the "output" folder created by the \code{create_folders} function.}
 
 \item{use_parallel}{Logical value specifying whether to use parallel computing when simulating >1 MCMC chain. See help for \code{jags} function in \code{jagsUI} package for more details.}
 }

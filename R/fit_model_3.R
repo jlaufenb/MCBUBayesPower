@@ -2,14 +2,14 @@
 
 #' Fit JAGS Model 3
 #'
-#' @param mcbu_data_file File path and name for MCBU distance data. Default is set to distdata_mcbu.csv in the working directory.
+#' @param mcbu_data_file File path and name for MCBU distance data. Default is set to look for "distdata_mcbu.csv" in the "data" folder created by the \code{create_folders} function..
 #' @param ni Total number of MCMC samples to simulate including burn-in samples. (Does not include adaptive samples)
 #' @param nb Number of MCMC samples to discard as burn-in samples.
 #' @param nt Integer specifying the thinning rate for MCMC samples.
 #' @param nc Integer specifying the number of individual MCMC chains to simulate.
 #' @param M Integer vector specifying the augmented number of MCBU groups per square kilometer.
 #' @param save_output Logical value specifying whether to save JAGS output.
-#' @param jags_output_folder Folder location to save JAGS output. Default creates output folder in working directory.
+#' @param jags_output_folder Folder location to save JAGS output. Default is the "output" folder created by the \code{create_folders} function.
 #' @param use_parallel Logical value specifying whether to use parallel computing when simulating >1 MCMC chain. See help for \code{jags} function in \code{jagsUI} package for more details.
 #'
 #' @return  JAGS MCMC output from fitting an exponential growth model with individual groups as observation unit and observer random effect on sigma parameter to MCBU distance-sampling data from 2003 and 2018. Output is saved as an RData file named \code{out3.RData}.

@@ -38,7 +38,7 @@ run_mcbu_power(
 
 \item{save_output}{Logical value specifying whether to save JAGS output. Default set to FALSE.}
 
-\item{sims_output_folder}{Folder location to save JAGS output from simulations. Default creates an "output/'design'/mcmc" subdirectory in working directory.}
+\item{sims_output_folder}{Folder location to save JAGS output from simulations. Default creates an "output/'design'/mcmc" subfolder in which 'design' is a subfolder name based on simulation scenario.}
 
 \item{batch}{Integer vector specifying replicates for data and MCMC simulation. Default set to single replicate.}
 

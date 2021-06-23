@@ -9,7 +9,7 @@
 #' @param survey_years Numeric vector specifying in which years surveys will be conducted.
 #' @param mcbu_data_file File path and name for MCBU distance data. Default is set to distdata_mcbu.csv in the working directory.
 #' @param save_output Logical value specifying whether to save JAGS output. Default set to FALSE.
-#' @param sims_output_folder Folder location to save JAGS output from simulations. Default creates an "output/'design'/mcmc" subdirectory in working directory.
+#' @param sims_output_folder Folder location to save JAGS output from simulations. Default creates an "output/'design'/mcmc" subfolder in which 'design' is a subfolder name based on simulation scenario.
 #' @param batch Integer vector specifying replicates for data and MCMC simulation. Default set to single replicate.
 #' @param M Integer vector specifying the augmented number of MCBU groups per square kilometer.
 #' @param nb Number of MCMC samples to discard as burn-in samples.

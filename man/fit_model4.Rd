@@ -32,7 +32,7 @@ fit_model4(
 
 \item{save_output}{Logical value specifying whether to save JAGS output.}
 
-\item{jags_output_folder}{Folder location to save JAGS output. Default creates output folder in working directory.}
+\item{jags_output_folder}{Folder location to save JAGS output. Default is the "output" folder created by the \code{create_folders} function.}
 
 \item{use_parallel}{Logical value specifying whether to use parallel computing when simulating >1 MCMC chain. See help for \code{jags} function in \code{jagsUI} package for more details.}
 }
