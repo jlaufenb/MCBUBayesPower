@@ -3,11 +3,11 @@
 #' Process and Summarize MCBU Power Simulation Output
 #'
 #' @param true_pctdecl True percent decline over 10 years used in simulations.
-#' @param jags_filepath File path to folder containing saved JAGS output from power simulations. Default is the "output/'design'/mcmc" subfolder created by the \code{run_mcbu_power} function in which 'design' is a subfolder name based on simulation scenario.
+#' @param jags_filepath File path to folder containing saved JAGS output from power simulations.
 #' @param save_figures Logical value specifying whether to save summary figures.
-#' @param figure_filepath File path to folder to which figures are saved. Default creates an "output/'design'/figures" subfolder in which 'design' is a subfolder name based on simulation scenario.
+#' @param figure_filepath File path to folder to which figures are saved. Default creates a "figures" folder along side the folder containing saved JAGS output from power simulations.
 #' @param save_summary Logical value specifying whether to save summary R objects.
-#' @param summary_filepath File path to folder to which summary R objects are saved. Default creates an "output/'design'/summary" subfolder in which 'design' is a subfolder name based on simulation scenario.
+#' @param summary_filepath File path to folder to which summary R objects are saved. Default creates a "summary" folder along side the folder containing saved JAGS output from power simulations.
 #'
 #' @return None
 #' @export
@@ -17,8 +17,6 @@ process_mcbu_power <- function(true_pctdecl = 25, output_filepath = NULL,
                                save_summary = TRUE, summary_filepath = NULL){
 
     if(is.null(output_filepath))stop("Must provide file path to output_filepath argument for the folder containing RData files with JAGS output.")
-    if(is.null(figure_filepath))stop("Must provide file path to figure_filepath argument for the folder to which figures are written.")
-    if(is.null(summary_filepath))stop("Must provide file path to summary_filepath argument for the folder to which simulation summaries are written.")
     filenames = list.files(output_filepath, full.names = TRUE)
     nreps = length(filenames)
     true_lambda = (1 - (true_pctdecl/100))^(1/10)
@@ -62,10 +60,25 @@ process_mcbu_power <- function(true_pctdecl = 25, output_filepath = NULL,
     (ci_cover_90 = sum(cover_90)/nreps)
     (onetail_power_90 = 1 - (sum(onetail_90)/nreps))
     #
-    if(save_summary)save(sq_err, cv, bias, rmse, cover_95, cover_90, ci_cover_95, ci_cover_90, onetail_power_95, onetail_power_90,
+    if(save_summary){
+        if(is.null(summary_filepath)){
+            indz = gregexpr("/",output_filepath)[[1]]
+            nindz = length(indz)
+            fig_dir = paste0(substr(output_filepath,1,indz[nindz-1]),"summary")
+            if(!dir.exists(fig_dir))dir.create(fig_dir)
+        }
+        save(sq_err, cv, bias, rmse, cover_95, cover_90, ci_cover_95, ci_cover_90, onetail_power_95, onetail_power_90,
                          r_post, lambda_post, pctdecl_post,pctdecl_est,
                          file = paste0(summary_filepath, "/summary.RData"))
+    }
     if(save_figures){
+        if(is.null(figure_filepath)){
+            indz = gregexpr("/",output_filepath)[[1]]
+            nindz = length(indz)
+            fig_dir = paste0(substr(output_filepath,1,indz[nindz-1]),"figures")
+            if(!dir.exists(fig_dir))dir.create(fig_dir)
+        }
+
         png(paste0(figure_filepath, "/ci_cover.png"), height = 9, width = 6.5, units = "in", res = 192)
         plot(1, type = "n", ylim = c(0, nreps), xlim = c(0,50), ylab = "Iteration", xlab = "Percent decline", main = "", frame.plot = FALSE)
         segments(pctdecl_ests[,"2.5%"], 1:nreps, pctdecl_ests[,"97.5%"], 1:nreps,
