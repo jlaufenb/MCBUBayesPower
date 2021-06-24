@@ -63,3 +63,22 @@ summary.fn	<- function(x=NULL){
     }
     if(is.null(x)){return(cn)}
 }
+
+
+
+
+
+
+#' Extract MCMC Samples for Expected N
+#'
+#' @param mod_output MCMC output object of class \code{jagsUI} from either model.
+#'
+#' @return Array containing MCMC samples for island-specific and total abundance for surveyed years (2003 and 2018) and projected abundances for 2028.
+#'
+getEN_mcmc <- function(mod_output = NULL){
+    EN_mcmc <- array(0, dim = c(mod_output$mcmc.info$n.samples,3,3), dimnames = list(NULL, c("hall","stma","total"),c(2003, 2018, 2028)))
+    EN_mcmc[,1:2,1:2] <- mod_output$sims.list$EN_region
+    EN_mcmc[,3,1:2] <- t(apply(EN_mcmc[,1:2,1:2],1,colSums))
+    EN_mcmc[,1:3,3] <- EN_mcmc[,1:3,2] * exp(out4$sims.list$r)^10
+    return(EN_mcmc)
+}
