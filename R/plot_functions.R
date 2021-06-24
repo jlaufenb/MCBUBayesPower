@@ -358,4 +358,73 @@ obs_detfn_plot <- function(distdata = NULL, mod_output = NULL, save_plots = FALS
 
 
 
+###########################################################################################################################
+
+
+
+#' Plot Posterior Sample Histograms for Expected Abundance
+#'
+#' @param mod_output MCMC output object of class \code{jagsUI} from either model.
+#' @param estimate Character vector specifying one or more island estimates to plot. Accepted values are "total", "hall", and "stma" and default is "total".
+#' @param year Numeric vector specifying years for which island estimates are plotted. Accepted values are  2003, 2018, and 2028 and the default is all 3.
+#' @param save_plots Logical value indicating whether to save plots.
+#' @param file_path File path including user-provided file name. Observer indexes will automatically be appended to file name.
+#' @param w Numeric value specifying figure width in inches.
+#' @param h Numeric value specifying figure height in inches.
+#'
+#' @return
+#' @export
+#'
+
+EN_isl_plot <- function(mod_output = NULL, estimate = "total", year = NULL, save_plot = FALSE, file_path = NULL, w = 9, h = 6.5){
+    ests = c("hall","stma","total")
+    Ests = c("Hall Island","St Matthew Island","Total island")
+    yrs = c(2003, 2018, 2028)
+    if(any(!(estimate %in% ests)))stop("Warning: Accepted values for the estimate argument are 'total', 'hall', and 'stma'")
+    if(is.null(year)){
+        year = yrs
+    }else{
+        if(any(!(year %in% yrs)))stop("Warning: Only 2003, 2018, and 2028 are currently accepted values for the year argument")
+    }
+    if(length(estimate) > 1 & length(year) > 1)stop("Warning: Cannot plot multiple estimate types (e.g., estimate = c('hall','stma')) and mutliple years (e.g., year = c(2003, 2018))")
+    rows = which(ests %in% estimate)
+    cols = which(yrs %in% year)
+    EN_mcmc = getEN_mcmc(mod_output)
+    EN_stats = apply(EN_mcmc,c(2,3),summary.fn)
+    indz = list(rows,cols)
+    nindz = sapply(indz,length)
+    nhists = max(unlist(nindz))
+    EN_mcmc = EN_mcmc[,indz[[1]], indz[[2]]]
+    EN_stats = as.data.frame(EN_stats[,indz[[1]], indz[[2]]])
+    xlims = c(0,35000)
+    brks = seq(0,35000,100)
+    if(all(ests[rows] %in% "hall")){
+        xlims = c(0,2500)
+        brks = seq(0,2500,25)
+    }
+    if(!("hall" %in% ests[rows])){
+        xlims = c(5000,35000)
+        brks = seq(5000,35000,250)
+    }
+    EN_plot = function(){
+        plot(1, type = "n", xlim = xlims, ylim = c(0,30000), frame.plot = FALSE, ylab = "Frequency", xlab = "Abundance")
+        for(i in 1:nhists){
+            hist(EN_mcmc[,i], breaks = brks, col = rgb(211/255,211/255,211/255,0.75), add = T)
+        }
+        segments(x0 = unlist(EN_stats["mean",]), y0 = rep(0,3), x1 = unlist(EN_stats["mean",]), y1 = rep(25000,3), lty = 1, lwd = 2, col = "red")
+        segments(x0 = unlist(EN_stats[c("2.5%","97.5%"),]), y0 = rep(0,3), x1 = unlist(EN_stats[c("2.5%","97.5%"),]), y1 = rep(25000,3), lty = 2, lwd = 2, col = "blue")
+        text(unlist(EN_stats["mean",]), 28000, paste0(yrs[cols], " ", Ests[rows], "\n N-hat = ", round(unlist(EN_stats["mean",]),0)), cex=0.4)
+        # text(unlist(EN_stats["mean",]), 28000, paste0("N-hat = \n", round(unlist(EN_stats["mean",]),0)), cex=0.5)
+    }
+    if(save_plot){
+        if(is.null(file_path)) file_path = paste0(getwd(),"/output/EN_posteriors_",
+                                                  paste0(ests[rows], collapse = "-"), "_",
+                                                  paste0(yrs[cols], collapse = "-"))
+        png(paste0(file_path,".png"), width = w, height = h, units = "in", res = 192)
+        EN_plot()
+        dev.off()
+    }else{
+        EN_plot()
+    }
+}
 
