@@ -7,7 +7,7 @@
 #' @param mu_obs Numeric value specifying the mean sigma value across observers on the log scale. Default set to preliminary estimates for 2003 and 2018.
 #' @param sd_obs Numeric value specifying the standard deviation of sigma values across observers on the log scale. Default set to preliminary estimates for 2003 and 2018.
 #' @param survey_years Numeric vector specifying in which years surveys will be conducted.
-#' @param mcbu_data_file File path and name for MCBU distance data. Default is set to distdata_mcbu.csv in the working directory.
+#' @param mcbu_data_file File path and name for MCBU distance data. Default is set to look for "distdata_mcbu.csv" in the "data" folder created by the \code{create_folders} function.
 #' @param save_output Logical value specifying whether to save JAGS output. Default set to FALSE.
 #' @param sims_output_folder Folder location to save JAGS output from simulations. Default creates an "output/'design'/mcmc" subfolder in which 'design' is a subfolder name based on simulation scenario.
 #' @param batch Integer vector specifying replicates for data and MCMC simulation. Default set to single replicate.
@@ -21,7 +21,7 @@
 #' @export
 #'
 run_mcbu_power <- function(log_lambda0 = c(4.1257,3.9400), r = log(0.75^(1/10)), mu_obs = -2.9769, sd_obs = 0.4470, survey_years = c(2018,2028),
-                       mcbu_data_file = "distdata_mcbu.csv", save_output = FALSE, sims_output_folder = NULL,
+                       mcbu_data_file = "data/distdata_mcbu.csv", save_output = FALSE, sims_output_folder = NULL,
                        batch = 1, M = c(200,100), ni = 200, nb = 100, nt = 1, nc = 1, use_parallel = TRUE, ...){
     write_model_4(...)
     if(save_output){
@@ -46,7 +46,9 @@ run_mcbu_power <- function(log_lambda0 = c(4.1257,3.9400), r = log(0.75^(1/10)),
     Jmat = matrix(rep(Js,T), nrow = S, ncol = T, byrow = FALSE, dimnames = list(sites,paste0("y",survey_years)))
     params4 = c("mu_obs", "sd_obs", "alpha0", "r", "lambda_pop", "EN_region")
     inits = function(){list(mu_obs = -3, sd_obs = 1, r = 0, log_lambda0 = rep(4,S))}
-    mcbu_data = read.csv(mcbu_data_file) # MCBU detections only, both survey years, data cleaned and ready for MCBU analysis
+    if(!(is.character(mcbu_data_file) | is.data.frame(mcbu_data_file))) stop("Warning: a character string or data.frame must be provided for the mcbu_data_file argument")
+    if(is.character(mcbu_data_file)) mcbu_data = read.csv(mcbu_data_file) # MCBU detections only, both survey years, data cleaned and ready for MCBU analysis
+    if(is.data.frame(mcbu_data_file)) mcbu_data = mcbu_data_file
     exp_names = c("Region.Label","Area","Sample.Label","Effort","species","distance","size","obs","date","julian","year","bird_lat","bird_long","notes")
     if(!all(exp_names %in% colnames(mcbu_data))){
         stop(paste0("Column names missing from MCBU distance data. Expected column names are:\n\n",

@@ -2,7 +2,7 @@
 
 #' Fit JAGS Model 3
 #'
-#' @param mcbu_data_file File path and name for MCBU distance data. Default is set to look for "distdata_mcbu.csv" in the "data" folder created by the \code{create_folders} function..
+#' @param mcbu_data_file File path and name for MCBU distance data. Default is set to look for "distdata_mcbu.csv" in the "data" folder created by the \code{create_folders} function.
 #' @param ni Total number of MCMC samples to simulate including burn-in samples. (Does not include adaptive samples)
 #' @param nb Number of MCMC samples to discard as burn-in samples.
 #' @param nt Integer specifying the thinning rate for MCMC samples.
@@ -15,7 +15,7 @@
 #' @return  JAGS MCMC output from fitting an exponential growth model with individual groups as observation unit and observer random effect on sigma parameter to MCBU distance-sampling data from 2003 and 2018. Output is saved as an RData file named \code{out3.RData}.
 #' @export
 #'
-fit_model3 <- function(mcbu_data_file = "distdata_mcbu.csv", ni = 200, nb = 100, nt = 1, nc = 1, M = c(200,100),
+fit_model3 <- function(mcbu_data_file = "data/distdata_mcbu.csv", ni = 200, nb = 100, nt = 1, nc = 1, M = c(200,100),
                       save_output = FALSE, jags_output_folder = NULL, use_parallel = TRUE, ...){
     write_model_3(...)
     if(is.null(jags_output_folder)){
@@ -23,7 +23,9 @@ fit_model3 <- function(mcbu_data_file = "distdata_mcbu.csv", ni = 200, nb = 100,
         if(!"output" %in% list.files("./"))
             dir.create(jags_output_folder)
     }
-    mcbu_data = read.csv(mcbu_data_file) # MCBU detections only, both survey years, data cleaned and ready for MCBU analysis
+    if(!(is.character(mcbu_data_file) | is.data.frame(mcbu_data_file))) stop("Warning: a character string or data.frame must be provided for the mcbu_data_file argument")
+    if(is.character(mcbu_data_file)) mcbu_data = read.csv(mcbu_data_file) # MCBU detections only, both survey years, data cleaned and ready for MCBU analysis
+    if(is.data.frame(mcbu_data_file)) mcbu_data = mcbu_data_file
     exp_names = c("Region.Label","Area","Sample.Label","Effort","species","distance","size","obs","date","julian","year","bird_lat","bird_long","notes")
     if(!all(exp_names %in% colnames(mcbu_data))){
         stop(paste0("Column names missing from MCBU distance data. Expected column names are:\n\n",
