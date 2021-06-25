@@ -68,7 +68,7 @@ process_mcbu_power <- function(true_pctdecl = 25, output_filepath = NULL,
             if(!dir.exists(sum_dir))dir.create(sum_dir)
         }
         save(sq_err, cv, bias, rmse, cover_95, cover_90, ci_cover_95, ci_cover_90, onetail_power_95, onetail_power_90,
-                         r_post, lambda_post, pctdecl_post, pctdecl_est,
+                         r_post, lambda_post, pctdecl_post, pctdecl_ests,
                          file = paste0(summary_filepath, "/summary.RData"))
     }
     if(save_figures){
@@ -104,5 +104,5 @@ process_mcbu_power <- function(true_pctdecl = 25, output_filepath = NULL,
         dev.off()
     }
     return(sq_err, cv, bias, rmse, cover_95, cover_90, ci_cover_95, ci_cover_90, onetail_power_95, onetail_power_90,
-           r_post, lambda_post, pctdecl_post, pctdecl_est)
+           r_post, lambda_post, pctdecl_post, pctdecl_ests)
 }
