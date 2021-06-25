@@ -428,3 +428,93 @@ EN_isl_plot <- function(mod_output = NULL, estimate = "total", year = NULL, save
     }
 }
 
+
+
+
+
+###########################################################################################################################
+
+
+
+
+
+#' Plot Population Growth From 2003 to 2018
+#'
+#' @param mod_output MCMC output object of class \code{jagsUI} from either model.
+#' @param estimate Character vector specifying one or more estimates of population growth to plot. Accepted values are "pctdecline" for percent population decline over the study period (15 years), "r" for annual exponential population growth rate, and "lambda" for annual geometric population growth rate. Default returns plots for all 3.
+#' @param save_plots Logical value indicating whether to save plots.
+#' @param file_path File path to save figures. File names are provided.
+#' @param w Numeric value specifying figure width in inches.
+#' @param h Numeric value specifying figure height in inches.
+#'
+#' @return
+#' @export
+#'
+growthN_plot <- function(mod_output = NULL, estimate = c("pctdecline","r","lambda"), save_plot = FALSE, file_path = NULL, w = 6.5, h = 9){
+    pctdecline_plot = function(){
+        pctdecline <- 100 * (apply(t(apply(mod_output$sims.list$EN_region,1,colSums)), 1,function(x)1-(x[2]/x[1])))
+        xs <- summary.fn(pctdecline)[c("mean","2.5%","97.5%")]
+        hist(pctdecline, xlim = c(20,60), breaks = seq(20,60,1),
+             main = paste0("Percent decline from 2003-2018 (pct-hat = ",round(xs[1],1),")"), xlab = "Percent decline")
+        abline(v = xs, lty = c(1,2,2), lwd = 2, col = c("red",rep("blue",2)))
+    }
+    if("pctdecline" %in% estimate){
+        if(save_plot){
+            file_path_pd = paste0(file_path,"/percent_decline_15yr.png")
+            if(is.null(file_path)) file_path_pd = paste0(getwd(),"/output/percent_decline_15yr.png")
+            png(file_path_pd, width = w, height = h, units = "in", res = 192)
+            pctdecline_plot()
+            dev.off()
+        }else{
+            pctdecline_plot()
+        }
+    }
+    #
+    r_plot = function(){
+        xs <- mod_output$summary[rownames(mod_output$summary)=="r",colnames(mod_output$summary) %in% c("mean","2.5%","97.5%")]
+        hist(mod_output$sims.list$r, xlim = c(-0.05,-0.015), breaks = seq(-0.05,-0.015,0.001),
+             main = paste0("Exponential growth rate (r-hat = ",round(xs[1],4),")"), xlab = "Growth rate")
+        abline(v = xs, lty = c(1,2,2), lwd = 2, col = c("red",rep("blue",2)))
+    }
+    if("r" %in% estimate){
+        if(save_plot){
+            file_path_r = paste0(file_path,"/r_exponential_growth.png")
+            if(is.null(file_path)) file_path_r = paste0(getwd(),"/output/r_exponential_growth.png")
+            png(file_path_r, width = w, height = h, units = "in", res = 192)
+            r_plot()
+            dev.off()
+        }else{
+            r_plot()
+        }
+    }
+    #
+    lambda_plot = function(){
+        grlambda <- exp(mod_output$sims.list$r)
+        xs <- summary.fn(grlambda)[c("mean","2.5%","97.5%")]
+        hist(grlambda, xlim = c(0.90,1.05), breaks = seq(0.90,1.05,0.001),
+             main = paste0("Geometric growth rate (lambda-hat = ",round(xs[1],4),")"), xlab = "Growth rate")
+        abline(v = xs, lty = c(1,2,2), lwd = 2, col = c("red",rep("blue",2)))
+    }
+    if("lambda" %in% estimate){
+        if(save_plot){
+            file_path_l = paste0(file_path,"/lambda_geometric_growth.png")
+            if(is.null(file_path)) file_path_l = paste0(getwd(),"/output/lambda_geometric_growth.png")
+            png(file_path_l, width = w, height = h, units = "in", res = 192)
+            lambda_plot()
+            dev.off()
+        }else{
+            lambda_plot()
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
