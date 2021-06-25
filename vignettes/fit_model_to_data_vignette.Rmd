@@ -1,8 +1,8 @@
 ---
 title: "Fit Bayesian Hierarchical Population Model to Raw Distance-Sampling Data"
 author: "Jared Laufenberg, Alaska Region I&M Program, USFWS"
-date: "`r Sys.Date()'"
-output: rmarkdown::html_vignette
+date: "`r Sys.Date()`"
+output: rmarkdown::pdf_document
 vignette: >
   %\VignetteIndexEntry{fit_model_to_data_vignette}
   %\VignetteEngine{knitr::rmarkdown}
@@ -12,17 +12,343 @@ vignette: >
 
 # Description
 
-`MCBUBayesPower` is a custom package created to fit hierarchical population models to distance-sampling data using Bayesian methods to obtain parameter estimates, to fit models to simulated data sets based on prospective survey designs, and compile simulation results to evaluate statistical power among multiple survey designs.  This vignette describes a workflow for using `MCBUBayesPower` to fit models to raw MCBU data collected during previous surveys on St Matthew Islands.
+`MCBUBayesPower` is a custom package created to fit hierarchical population models to distance-sampling data using Bayesian methods to obtain parameter estimates, to fit models to simulated data sets based on prospective survey designs, and compile simulation results to evaluate statistical power among multiple survey designs.  This vignette describes a workflow for using `MCBUBayesPower` to fit models to raw MCBU data collected during previous surveys on St Matthew IKslands.
 
 
-# Workflow
+# Raw Data Analysis Workflow
 
 
+## Save a copy of the raw MCBU distance-sampling data set (CSV format) in the `data` folder and name it `distdata_mcbu.csv`.
 
 
+## Load packages.
 
-```{r load-stuff, echo = TRUE, eval = FALSE}
-if(!"MCBUBayesPower" %in% rownames(installed.packages())) install.packages("./resources/software/MCBUBayesPower_0.0.0.9000.tar.gz", repos = NULL)
+
+```{r setup, echo = TRUE, eval = FALSE, results = "hide", message = FALSE}
+
+## Install and load MCBUBayesPower R package
+if (!require("devtools")) install.packages("devtools")
+devtools::install_github("USFWS/MCBUBayesPower", ref = "master", build_vignettes = TRUE)
 library(MCBUBayesPower)
+
+## Install and load jagsUI R package
+if (!require("jagsUI")) install.packages("jagsUI")
 library(jagsUI)
+
 ```
+
+## Create folders for saving output
+
+
+```{r output-folders, echo = TRUE, eval = FALSE}
+
+## Create folders
+
+create_folders()
+
+```
+
+
+## Fit model treating individual birds as the observation unit (i.e., Model 4), save output, print traceplots and summaries of MCMC output.
+
+```{r analysis-1, echo = TRUE, eval = FALSE}
+
+## Fit Bayesian hierarchical population model treating individual birds as the observation unit
+out4 <- fit_model4(mcbu_data_file = "data/distdata_mcbu.csv",
+                   ni = 10500,
+                   nb = 500,
+                   nt = 3,
+                   nc = 3,
+                   save_output = TRUE,
+                   jags_output_folder = "./output")
+
+
+traceplot(out4)
+options(max.print = 50000)
+print(out4, 3)
+
+
+
+```
+
+## Plot estimated global mean detection function
+
+```{r analysis-2, echo = TRUE, eval = FALSE}
+
+## Plot distance detection functions for individual models (i.e., input provided for 1 model argument)
+## or functions from both models (i.e., input provided for both model argument) overlaid on the sample plot.
+detfn_plot(mod4_output = out4)
+
+detfn_plot(mod4_output = out4, mod3_output = out3) # Note: must first fit model 3 (i.e., groups as observation unit) to provide jagsUI object to function. See below.
+
+
+```
+
+
+## Plot observer-specific detection functions overlaid with recorded observations of bird groups.
+
+```{r analysis-3, echo = TRUE, eval = FALSE}
+
+## Plot distance detection functions for individual observers including observed groups
+obs_detfn_plot(mcbu_data_file = "data/distdata_mcbu.csv", mod_output = out4)
+
+```
+
+
+## Plot expected *N* estimated for each island and total for both islands in 2003 and 2018 and projected for 2028.
+
+
+```{r analysis-4, echo = TRUE, eval = FALSE}
+
+
+## Plot Hall Island
+EN_isl_plot(mod_output = out4, estimate = "hall")
+
+## Plot St Matthew Island
+EN_isl_plot(mod_output = out4, estimate = "stma")
+
+## Plot total island
+EN_isl_plot(mod_output = out4)
+
+```
+
+
+## Plot percent population decline over the study period (15 years), annual exponential population growth rate (*r*), and annual geometric population growth rate ($\lambda$).
+
+
+```{r analysis-5, echo = TRUE, eval = FALSE}
+
+
+## Plot all 3 
+growthN_plot(mod_output = out4, estimate = "hall")
+
+```
+
+
+## Plot estimated difference in density between islands.
+
+
+```{r analysis-6, echo = TRUE, eval = FALSE}
+
+
+## Plot estimated difference in island density
+density_diff_plot(mod_output = out4)
+
+
+```
+
+
+
+
+
+## Fit model treating groups of birds as the observation unit (i.e., Model 3), save output, and print traceplots and summaries of MCMC output.
+
+
+```{r analysis-7, echo = TRUE, eval = FALSE}
+
+## Fit Bayesian hierarchical population model treating groups of birds as the observation unit
+out3 <- fit_model4(mcbu_data_file = "data/distdata_mcbu.csv",
+                   ni = 10500,
+                   nb = 500,
+                   nt = 3,
+                   nc = 3,
+                   save_output = TRUE,
+                   jags_output_folder = "./output")
+
+
+traceplot(out3)
+options(max.print = 50000)
+print(out3, 3)
+
+
+
+```
+
+
+
+
+
+\newpage
+
+# Simulation and Power Analysis Workflow
+
+
+## Simulate population growth and distance-sampling data sets, fit bayesian population model, estimate model parameters, save output
+
+A subfolder within the `output` folder is created by the `run_mcbu_power` function to store and named based on simulated growth rate and number of surveys over a 10-year period. A subfolder within the simulation folder named `mcmc` also is created to store MCMC output as .Rdata files from individual simulations.
+
+
+```{r analysis-8, echo = TRUE, eval = FALSE}
+
+## Simulate data, fit model, and save mcmc output
+run_mcbu_power(log_lambda0 = log(out4$mean$lambda_pop[,2]), 
+               r = log(0.75^(1/10)), 
+               mu_obs = out4$mean$mu_obs, 
+               sd_obs = out4$mean$sd_obs, 
+               survey_years = c(2018,2028),
+               mcbu_data_file = "data/distdata_mcbu.csv", 
+               save_output = TRUE, 
+               batch = 1000, 
+               M = c(200,100), 
+               ni = 5500, 
+               nb = 500, 
+               nt = 1, 
+               nc = 1, 
+               use_parallel = FALSE)
+
+```
+
+
+
+## Process MCMC output from simulation analysis
+
+Two subfolders are created by the `process_mcbu_power` function alongside the `mcmc` subfolder, one named `figures` when plots need to be saved and one named `summary` for storing summary statistics of MCMC samples.
+
+
+```{r analysis-9, echo = TRUE, eval = FALSE}
+
+## Process mcmc output
+process_mcbu_power(true_pctdecl = 25, 
+                   output_filepath = "../output/mcbu_power_2surveys_r-0.029/mcmc")
+
+```
+
+
+## Create summary plots of simulation results
+
+
+```{r analysis-10, echo = TRUE, eval = FALSE}
+
+
+## Plot histogram of estimator bias for exponential growth rate (r)
+bias_plot(bias = bias)
+
+
+## Plot histogram of estimator coefficient of variation (CV) for exponential growth rate (r)
+cv_plot(cv = cv)
+
+## Plot histogram of estimator squared error for exponential growth rate (r)
+sq_err_plot(sq_err = sq_err)
+
+## Plot of 95% Bayesian credible intervals for all simulations
+ci_cover_plot(pctdecl_ests = pctdecl_ests, 
+              cover_95 = cover_95, 
+              true_pctdecl = 25)
+
+
+```
+
+
+
+
+
+
+\newpage
+
+# R Session Info
+
+```{r session info, echo=TRUE}
+sessionInfo()
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
