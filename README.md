@@ -18,4 +18,4 @@ To install and load the package:
 
 Further instructions describing the basic workflow for using `MCBUBayesPower` is provided as a vignette in the package help documentation:
 
-help(package = "MCBUBayesPower")
+`help(package = "MCBUBayesPower")`
