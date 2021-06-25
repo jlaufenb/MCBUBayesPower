@@ -16,6 +16,6 @@ To install and load the package:
 
 `library(MCBUBayesPower)`
 
-Further instructions describing the basic workflow for using `MCBUBayesPower` is provided as a vignette in the package help documentation:
+Further instructions describing the basic workflow for using `MCBUBayesPower` are provided as a vignette in the package help documentation:
 
 `help(package = "MCBUBayesPower")`
