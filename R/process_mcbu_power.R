@@ -64,8 +64,8 @@ process_mcbu_power <- function(true_pctdecl = 25, output_filepath = NULL,
         if(is.null(summary_filepath)){
             indz = gregexpr("/",output_filepath)[[1]]
             nindz = length(indz)
-            fig_dir = paste0(substr(output_filepath,1,indz[nindz-1]),"summary")
-            if(!dir.exists(fig_dir))dir.create(fig_dir)
+            sum_dir = paste0(substr(output_filepath,1,indz[nindz-1]),"summary")
+            if(!dir.exists(sum_dir))dir.create(sum_dir)
         }
         save(sq_err, cv, bias, rmse, cover_95, cover_90, ci_cover_95, ci_cover_90, onetail_power_95, onetail_power_90,
                          r_post, lambda_post, pctdecl_post, pctdecl_est,
