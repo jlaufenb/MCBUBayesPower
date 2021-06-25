@@ -302,7 +302,7 @@ sq_err_plot <- function(sq_err = NULL, save_plot = FALSE, file_path = NULL, w = 
 
 #' Plot Observer-Specific Detection Functions and Observations
 #'
-#' @param distdata Dataframe containing raw MCBU distance-sampling data.
+#' @param mcbu_data_file File path and name for MCBU distance data. Default is set to look for "distdata_mcbu.csv" in the "data" folder created by the \code{create_folders} function.
 #' @param mod_output MCMC output object of class \code{jagsUI} from either model.
 #' @param save_plots Logical value indicating whether to save plots.
 #' @param file_path File path including user-provided file name. Observer indexes will automatically be appended to file name.
@@ -314,7 +314,26 @@ sq_err_plot <- function(sq_err = NULL, save_plot = FALSE, file_path = NULL, w = 
 #'
 
 
-obs_detfn_plot <- function(distdata = NULL, mod_output = NULL, save_plots = FALSE, file_path = NULL, w = 6.5, h = 6.5){
+obs_detfn_plot <- function(mcbu_data_file = "data/distdata_mcbu.csv", mod_output = NULL, save_plots = FALSE, file_path = NULL, w = 6.5, h = 6.5){
+    if(!(is.character(mcbu_data_file) | is.data.frame(mcbu_data_file))) stop("Warning: a character string or data.frame must be provided for the mcbu_data_file argument")
+    if(is.character(mcbu_data_file)) mcbu_data = read.csv(mcbu_data_file) # MCBU detections only, both survey years, data cleaned and ready for MCBU analysis
+    if(is.data.frame(mcbu_data_file)) mcbu_data = mcbu_data_file
+    exp_names = c("Region.Label","Area","Sample.Label","Effort","species","distance","size","obs","date","julian","year","bird_lat","bird_long","notes")
+    if(!all(exp_names %in% colnames(mcbu_data))){
+        stop(paste0("Column names missing from MCBU distance data. Expected column names are:\n\n",
+                    paste0(exp_names, collapse = ", ")))
+    }
+    colnames(mcbu_data) = c("region_id","region_area","survey_number","transect_length","species","distance","group_size","observer",
+                            "date","julian","year","latitude","longitude","notes")
+    indz = unlist(mapply(function(i,n){rep(i,each = n)}, i = seq_len(nrow(mcbu_data)),
+                         n = as.integer(mcbu_data$group_size), SIMPLIFY = TRUE))
+    mcbu_data = mcbu_data[indz,]
+    mcbu_data$transect_id = paste0(mcbu_data$region_id,"_",mcbu_data$survey_number)
+    mcbu_data$survey_number = as.character(mcbu_data$survey_number)
+    mcbu_data$distancekm = mcbu_data$distance / 1000
+    observer_levels = data.frame(observer = c("MAL","REG","SMM","JAJ","RMR","ARD","MND","BWR","MDR","DRR","SLW"),
+                                 level = 11:1)
+    mcbu_data$observer = as.factor(match(mcbu_data$observer, observer_levels$observer))
     dists <- seq(0,250,0.5)
     sigmas <- c(exp(mod_output$mean$mu_obs) * 1000,
                  exp(mod_output$mean$mu_obs + 1.96 * mod_output$mean$sd_obs)*1000,
@@ -322,8 +341,8 @@ obs_detfn_plot <- function(distdata = NULL, mod_output = NULL, save_plots = FALS
                  exp(mod_output$mean$alpha0[1:11]) * 1000)
 
     observer_levels = data.frame(observer = c("MAL", "REG", "SMM", "JAJ", "RMR", "ARD", "MND", "BWR", "MDR", "DRR", "SLW"), level = 11:1)
-    distdata$obs = as.factor(match(distdata$obs, observer_levels$observer))
-    by_obs <- split(distdata, distdata$obs)
+    mcbu_data$obs = as.factor(match(mcbu_data$obs, observer_levels$observer))
+    by_obs <- split(mcbu_data, mcbu_data$obs)
     obs_detfn = function(){
         par(mar=c(5, 4, 4, 6) + 0.1)
         plot(1, type = "n", xlim = c(0,200), ylim = c(0,nrow(tmp)), frame.plot = FALSE, axes = FALSE, xlab = "", ylab = "")
