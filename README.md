@@ -10,6 +10,12 @@ survey designs.
 # Instructions
 
 To install and load the package:  
+
 `if (!require("devtools")) install.packages("devtools")`  
 `devtools::install_github("jlaufenb/MCBUBayesPower", build_vignettes = TRUE)`
+
 `library(MCBUBayesPower)`
+
+Further instructions describing the basic workflow for using `MCBUBayesPower` is provided as a vignette in the package help documentation:
+
+help(package = "MCBUBayesPower")
