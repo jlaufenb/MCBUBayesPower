@@ -5,7 +5,7 @@
 \title{Plot Observer-Specific Detection Functions and Observations}
 \usage{
 obs_detfn_plot(
-  distdata = NULL,
+  mcbu_data_file = "data/distdata_mcbu.csv",
   mod_output = NULL,
   save_plots = FALSE,
   file_path = NULL,
@@ -14,7 +14,7 @@ obs_detfn_plot(
 )
 }
 \arguments{
-\item{distdata}{Dataframe containing raw MCBU distance-sampling data.}
+\item{mcbu_data_file}{File path and name for MCBU distance data. Default is set to look for "distdata_mcbu.csv" in the "data" folder created by the \code{create_folders} function.}
 
 \item{mod_output}{MCMC output object of class \code{jagsUI} from either model.}
 

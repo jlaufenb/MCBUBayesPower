@@ -10,7 +10,7 @@ run_mcbu_power(
   mu_obs = -2.9769,
   sd_obs = 0.447,
   survey_years = c(2018, 2028),
-  mcbu_data_file = "distdata_mcbu.csv",
+  mcbu_data_file = "data/distdata_mcbu.csv",
   save_output = FALSE,
   sims_output_folder = NULL,
   batch = 1,
@@ -34,7 +34,7 @@ run_mcbu_power(
 
 \item{survey_years}{Numeric vector specifying in which years surveys will be conducted.}
 
-\item{mcbu_data_file}{File path and name for MCBU distance data. Default is set to distdata_mcbu.csv in the working directory.}
+\item{mcbu_data_file}{File path and name for MCBU distance data. Default is set to look for "distdata_mcbu.csv" in the "data" folder created by the \code{create_folders} function.}
 
 \item{save_output}{Logical value specifying whether to save JAGS output. Default set to FALSE.}
 
